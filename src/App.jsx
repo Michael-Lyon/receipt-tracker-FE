@@ -8,6 +8,9 @@ import axios from 'axios';
 // Configure axios base URL
 axios.defaults.baseURL = 'https://receipttrackerbe-production.up.railway.app';
 
+
+
+
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/auth" />;

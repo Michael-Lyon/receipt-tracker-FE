@@ -12,7 +12,7 @@ export default function TestPage() {
           Test Button
         </Button>
         <Text fontSize="sm" color="gray.600">
-          Backend API: http://localhost:8000
+          Backend API: https://receipttrackerbe-production.up.railway.app/
           <br />
           Frontend: http://localhost:5173
         </Text>

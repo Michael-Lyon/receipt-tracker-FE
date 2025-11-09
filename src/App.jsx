@@ -6,7 +6,7 @@ import ReceiptsPage from './pages/ReceiptsPage';
 import axios from 'axios';
 
 // Configure axios base URL
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = 'https://receipttrackerbe-production.up.railway.app';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();

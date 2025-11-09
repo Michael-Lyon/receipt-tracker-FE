@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -28,8 +29,8 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, register, loading } = useAuth();
   
   const bgColor = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -54,21 +55,29 @@ export default function AuthPage() {
       return;
     }
 
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
       if (isLogin) {
-        setSuccess('Login successful! Redirecting to dashboard...');
-        setTimeout(() => navigate('/demo-dashboard'), 1500);
+        const result = await login(email, password);
+        if (result.success) {
+          setSuccess('Login successful! Redirecting to dashboard...');
+          setTimeout(() => navigate('/receipts'), 1500);
+        } else {
+          setError(result.error);
+        }
       } else {
-        setSuccess('Account created successfully! Please sign in.');
-        setIsLogin(true);
-        setEmail('');
-        setPassword('');
+        const result = await register(email, password);
+        if (result.success) {
+          setSuccess('Account created successfully! Please sign in.');
+          setIsLogin(true);
+          setEmail('');
+          setPassword('');
+        } else {
+          setError(result.error);
+        }
       }
-    }, 1000);
+    } catch (error) {
+      setError('An unexpected error occurred. Please try again.');
+    }
   };
 
   const toggleMode = () => {

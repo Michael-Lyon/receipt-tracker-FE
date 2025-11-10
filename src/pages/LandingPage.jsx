@@ -81,7 +81,7 @@ export default function LandingPage() {
               AI-Powered
             </Badge>
           </HStack>
-          <HStack spacing={3}>
+          <HStack spacing={3} display={{ base: "none", md: "flex" }}>
             <Button variant="ghost" onClick={() => navigate('/auth')}>
               Sign In
             </Button>
@@ -89,14 +89,21 @@ export default function LandingPage() {
               Get Started
             </Button>
           </HStack>
+          
+          {/* Mobile menu button */}
+          <HStack spacing={2} display={{ base: "flex", md: "none" }}>
+            <Button size="sm" colorScheme="blue" onClick={() => navigate('/auth')}>
+              Get Started
+            </Button>
+          </HStack>
         </HStack>
       </Container>
 
       {/* Hero Section */}
-      <Container maxW="6xl" py={20}>
+      <Container maxW="6xl" py={{ base: 10, md: 20 }}>
         <VStack spacing={8} textAlign="center">
           <Heading
-            size="2xl"
+            size={{ base: "xl", md: "2xl" }}
             fontWeight="bold"
             lineHeight="shorter"
             maxW="4xl"
@@ -113,30 +120,48 @@ export default function LandingPage() {
             OCR technology.
           </Text>
 
-          <HStack spacing={4}>
+          <VStack spacing={4} w="100%" maxW={{ base: "100%", md: "auto" }}>
+            <HStack spacing={4} wrap="wrap" justify="center" w="100%">
+              <Button
+                size={{ base: "md", md: "lg" }}
+                colorScheme="blue"
+                px={{ base: 6, md: 8 }}
+                onClick={() => navigate('/auth')}
+                w={{ base: "100%", sm: "auto" }}
+                maxW={{ base: "300px", sm: "auto" }}
+              >
+                Start Tracking Receipts
+              </Button>
+              <Button
+                size={{ base: "md", md: "lg" }}
+                variant="outline"
+                colorScheme="blue"
+                px={{ base: 6, md: 8 }}
+                onClick={() => navigate('/demo')}
+                w={{ base: "100%", sm: "auto" }}
+                maxW={{ base: "300px", sm: "auto" }}
+              >
+                View Demo
+              </Button>
+            </HStack>
+            
+            {/* Demo Dashboard Direct Access */}
             <Button
-              size="lg"
+              size={{ base: "sm", md: "md" }}
+              variant="ghost"
               colorScheme="blue"
-              px={8}
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/demo-dashboard')}
+              w={{ base: "100%", sm: "auto" }}
+              maxW={{ base: "250px", sm: "auto" }}
             >
-              Start Tracking Receipts
+              🔍 Try Interactive Dashboard
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              colorScheme="blue"
-              px={8}
-              onClick={() => navigate('/demo')}
-            >
-              View Demo
-            </Button>
-          </HStack>
+          </VStack>
         </VStack>
       </Container>
 
       {/* Features Section */}
-      <Container maxW="6xl" py={20}>
+      <Container maxW="6xl" py={{ base: 10, md: 20 }}>
         <VStack spacing={12}>
           <VStack spacing={4} textAlign="center">
             <Heading size="xl">Powerful Features</Heading>
@@ -159,7 +184,7 @@ export default function LandingPage() {
       </Container>
 
       {/* CTA Section */}
-      <Container maxW="4xl" py={20}>
+      <Container maxW="4xl" py={{ base: 10, md: 20 }}>
         <Box
           bg="blue.600"
           color="white"

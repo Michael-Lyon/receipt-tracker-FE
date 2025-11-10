@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';
 import ReceiptsPage from './pages/ReceiptsPage';
+import DemoPage from './pages/DemoPage';
+import DemoDashboard from './pages/DemoDashboard';
 import axios from 'axios';
 
 // Configure axios base URL
@@ -26,6 +28,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
       <Route path="/auth" element={<PublicRoute><AuthPage /></PublicRoute>} />
+      <Route path="/demo" element={<DemoPage />} />
+      <Route path="/demo-dashboard" element={<DemoDashboard />} />
       <Route path="/receipts" element={<ProtectedRoute><ReceiptsPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { FiUpload, FiCheck } from 'react-icons/fi';
 import axios from 'axios';
+import API_CONFIG, { getApiUrl } from '../config/api';
 
 export default function ReceiptUpload({ onUploadSuccess }) {
   const [file, setFile] = useState(null);
@@ -50,11 +51,15 @@ export default function ReceiptUpload({ onUploadSuccess }) {
   };
 
   const handleUpload = async () => {
+    console.log('🔥 handleUpload called!');
+    
     if (!file) {
+      console.log('❌ No file selected');
       setError('Please select a file first');
       return;
     }
 
+    console.log('🚀 Starting upload process with file:', file.name);
     setUploading(true);
     setError('');
     setSuccess('');
@@ -64,18 +69,29 @@ export default function ReceiptUpload({ onUploadSuccess }) {
       const formData = new FormData();
       formData.append('file', file);
 
-      const uploadResponse = await axios.post('/api/receipts/upload', formData, {
+      const uploadUrl = getApiUrl(API_CONFIG.ENDPOINTS.UPLOAD);
+      console.log('📤 Uploading file to:', uploadUrl);
+      
+      const uploadResponse = await axios.post(uploadUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
+      console.log('✅ Upload successful, response:', uploadResponse.data);
       const receiptId = uploadResponse.data.id;
+      console.log('🆔 Receipt ID extracted:', receiptId);
+      
+      console.log('🔄 Switching from uploading to processing...');
       setUploading(false);
       setProcessing(true);
 
       // Process OCR
-      const ocrResponse = await axios.post(`/api/receipts/${receiptId}/process`);
+      const processEndpoint = getApiUrl(API_CONFIG.ENDPOINTS.PROCESS(receiptId));
+      console.log(`🧠 About to call processing endpoint:`, processEndpoint);
+      
+      const ocrResponse = await axios.post(processEndpoint);
+      console.log('✅ OCR processing successful:', ocrResponse.data);
       
       setProcessing(false);
       setSuccess('Receipt uploaded and processed successfully!');
@@ -87,10 +103,15 @@ export default function ReceiptUpload({ onUploadSuccess }) {
       
       // Notify parent component
       if (onUploadSuccess) {
+        console.log('📢 Notifying parent component with:', ocrResponse.data);
         onUploadSuccess(ocrResponse.data);
       }
 
     } catch (error) {
+      console.error('❌ Upload/processing error occurred:', error);
+      console.error('❌ Error response data:', error.response?.data);
+      console.error('❌ Error status:', error.response?.status);
+      console.error('❌ Error stack:', error.stack);
       setUploading(false);
       setProcessing(false);
       setError(error.response?.data?.detail || 'Upload failed. Please try again.');

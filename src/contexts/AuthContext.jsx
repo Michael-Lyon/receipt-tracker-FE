@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { getApiUrl } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       formData.append('username', email);
       formData.append('password', password);
       
-      const response = await axios.post('https://receipttrackerbe-production.up.railway.app/api/login', formData);
+      const response = await axios.post(getApiUrl('/api/login'), formData);
       const { access_token } = response.data;
       
       localStorage.setItem('token', access_token);
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     setLoading(true);
     try {
-      await axios.post('https://receipttrackerbe-production.up.railway.app/api/register', { email, password });
+      await axios.post(getApiUrl('/api/register'), { email, password });
       return { success: true };
     } catch (error) {
       console.error('Registration error:', error);

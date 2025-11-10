@@ -237,13 +237,25 @@ export default function ReceiptsPage() {
     formData.append('file', uploadFile);
     
     try {
-      await axios.post('/api/receipts/upload', formData, {
+      console.log('🚀 Starting upload process from ReceiptsPage...');
+      
+      // Step 1: Upload file
+      console.log('📤 Uploading file...');
+      const uploadResponse = await axios.post('/api/receipts/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       
+      console.log('✅ Upload successful:', uploadResponse.data);
+      const receiptId = uploadResponse.data.id;
+      
+      // Step 2: Process OCR
+      console.log(`🧠 Processing OCR for receipt ${receiptId}...`);
+      const ocrResponse = await axios.post(`/api/receipts/${receiptId}/process`);
+      console.log('✅ OCR processing successful:', ocrResponse.data);
+      
       toast({
-        title: "Receipt uploaded successfully!",
-        description: "Processing will complete in a few moments.",
+        title: "Receipt uploaded and processed successfully!",
+        description: "Your receipt has been processed with AI.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -251,9 +263,10 @@ export default function ReceiptsPage() {
       
       fetchReceipts(); // Refresh the receipts list
     } catch (error) {
+      console.error('❌ Upload/processing error:', error);
       toast({
         title: "Upload failed",
-        description: "There was an error uploading your receipt. Please try again.",
+        description: error.response?.data?.detail || "There was an error processing your receipt. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,

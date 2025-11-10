@@ -6,9 +6,10 @@ import ReceiptsPage from './pages/ReceiptsPage';
 import DemoPage from './pages/DemoPage';
 import DemoDashboard from './pages/DemoDashboard';
 import axios from 'axios';
+import API_CONFIG from './config/api';
 
 // Configure axios base URL
-axios.defaults.baseURL = 'https://receipttrackerbe-production.up.railway.app';
+axios.defaults.baseURL = API_CONFIG.BASE_URL;
 
 
 

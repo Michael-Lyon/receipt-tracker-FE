@@ -1,4 +1,5 @@
 import { Box, Heading, Text, Button, VStack } from '@chakra-ui/react';
+import API_CONFIG from '../config/api';
 
 export default function TestPage() {
   return (
@@ -12,7 +13,7 @@ export default function TestPage() {
           Test Button
         </Button>
         <Text fontSize="sm" color="gray.600">
-          Backend API: https://receipttrackerbe-production.up.railway.app/
+          Backend API: {API_CONFIG.BASE_URL}/
           <br />
           Frontend: http://localhost:5173
         </Text>
